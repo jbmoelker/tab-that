@@ -1,0 +1,34 @@
+{
+  "name": "tab-that",
+  "main": "tab-that.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jbmoelker/tab-that",
+  "authors": [
+    "Jasper Moelker <j.b.moelker@activeids.nl>"
+  ],
+  "description": "Turn plain markup into an interactive tab component using just data-attributes or a JS API.",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+	  "tabs",
+	  "tab panels",
+	  "carousel",
+	  "accordion",
+	  "accessible",
+	  "aria"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.1.1",
+    "requirejs": "~2.1.13",
+    "airhooks": "~0.0.1"
+  }
+}
