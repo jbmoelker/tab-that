@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>TabThat</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="tab-that.css">
+</head>
+<body class="container">
+<h1><code>TabThat</code></h1>
+<p>Bootstrap CSS classes are only used to prettify the examples.</p>
+
+<section class="tab-interface" data-tab-that>
+    <nav>
+        <h2 data-tab-title class="a11y-sr-only">Golf gear for sale</h2>
+        <ul class="nav nav-tabs" data-tab-list>
+            <li><a class="tab-handle" href="#golf-clubs">Golf Clubs</a></li>
+            <li><a class="tab-handle" href="#golf-tees">Golf Tees</a></li>
+            <li><a class="tab-handle is-selected" href="#golf-bags">Golf Bags</a></li>
+            <li><a class="tab-handle" href="#golf-carts">Golf Carts</a></li>
+        </ul>
+    </nav>
+
+    <article id="golf-clubs" class="tab-panel" data-tab-panel>
+        <h3 class="tab-panel-title">
+            New golf clubs for sale
+        </h3>
+        <div class="thumbnail">
+            <img alt="New golf bags" src="http://placehold.it/350x150&text=Golf+clubs"
+                 class="img-responsive"/>
+        </div>
+        <a href="" class="btn btn-primary">Order clubs at a discount now</a>
+    </article>
+
+    <article id="golf-tees" class="tab-panel" data-tab-panel>
+        <h3 class="tab-panel-title">
+            New golf tees for sale
+        </h3>
+        <div class="thumbnail">
+            <img alt="New golf bags" src="http://placehold.it/350x150&text=Golf+tees"
+                 class="img-responsive"/>
+        </div>
+        <a href="" class="btn btn-primary">Order tees at a discount now</a>
+    </article>
+
+    <article id="golf-bags" class="tab-panel" data-tab-panel>
+        <h3 class="tab-panel-title">
+            New golf bags for sale
+        </h3>
+        <div class="thumbnail">
+            <img alt="New golf bags" src="http://placehold.it/350x150&text=Golf+bags"
+                 class="img-responsive"/>
+        </div>
+        <a href="" class="btn btn-primary">Order bag at a discount now</a>
+    </article>
+
+    <article id="golf-carts" class="tab-panel" data-tab-panel>
+        <h3 class="tab-panel-title">
+            New golf carts for sale
+        </h3>
+        <div class="thumbnail">
+            <img alt="New golf bags" src="http://placehold.it/350x150&text=Golf+cart"
+                 class="img-responsive"/>
+        </div>
+        <a href="" class="btn btn-primary">Order cart at a discount now</a>
+    </article>
+
+    <!--
+    <button data-tab-previous>Prev</button>
+    <button data-tab-next>Next</button>
+    -->
+</section>
+
+<script>
+    var require = {
+        paths: {
+            airhooks: 'bower_components/airhooks/airhooks'
+        }
+    };
+</script>
+<script src="bower_components/requirejs/require.js"></script>
+<script>
+    require(['tab-that'], function(TabThat){
+        // automatically turn all elements with `data-tab-that` attr into tab components.
+        window.tabThats = TabThat(); // expose just so we can test the API.
+    });
+</script>
+</body>
+</html>

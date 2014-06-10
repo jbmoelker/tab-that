@@ -1,0 +1,15 @@
+.tab-interface {
+	max-width: 30em;
+}
+
+.tab-interface.is-tabbed .tab-handle.is-selected {
+	border: 1px solid #ddd;
+	border-bottom-color: white;
+}
+
+.tab-interface.is-tabbed .tab-panel {
+	display: none;
+}
+.tab-interface.is-tabbed .tab-panel.is-selected {
+	display: inherit;
+}
