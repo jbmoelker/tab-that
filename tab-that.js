@@ -44,7 +44,9 @@
 		// only enhance if modern element selectors are supported
 		if(!('querySelectorAll' in doc)){ return element; }
 		if(element) {
-			this.init(element, options);
+			if(!element.isTabInterface){
+				this.init(element, options);
+			}
 		} else {
 			var elements = doc.querySelectorAll('[data-tab-that]');
 			forEach(elements, function(element){
@@ -68,7 +70,10 @@
 		this.panels = [];
 		this.title = element.querySelector(this.settings.titleSelector).innerHTML;
 		this.list = element.querySelector(this.settings.listSelector);
+		this.listItems = this.list.querySelectorAll('li');
 		this.handles = this.list.querySelectorAll('a');
+		this.prevButtons = element.querySelectorAll(this.settings.prevButtonSelector);
+		this.nextButtons = element.querySelectorAll(this.settings.nextButtonSelector);
 		this.selectedIndex = -1;
 
 		var selectedHandle = this.list.querySelector('a.' + this.settings.selectedClass);
@@ -81,7 +86,7 @@
 		this.bind();
 
 		// mark element as enhanced
-		this.element.isTabThat = true;
+		this.element.isTabInterface = true;
 		this.element.tabThat = this;
 		addClass(element, this.settings.enhancedClass);
 
@@ -94,7 +99,7 @@
 		this.unbind();
 
 		// remove enhanced states
-		this.element.removeAttribute('isTabThat');
+		this.element.removeAttribute('isTabInterface');
 		this.element.removeAttribute('tabThat');
 		removeClass(this.element, this.settings.enhancedClass);
 
@@ -105,6 +110,8 @@
 		return  {
 			titleSelector: '[data-tab-title]',
 			listSelector: '[data-tab-list]',
+			prevButtonSelector: '[data-tab-previous]',
+			nextButtonSelector: '[data-tab-next]',
 			enhancedClass: 'is-tabbed',
 			selectedClass: 'is-selected'
 		};
@@ -126,6 +133,9 @@
 		this.element.setAttribute('role','application');
 		this.element.setAttribute('aria-label', this.title);
 		this.list.setAttribute('role','tablist');
+		forEach(this.listItems, function(item){
+			item.setAttribute('role','presentation');
+		});
 		forEach(this.handles, function(handle, index) {
 			var panelId = handle.href.split('#')[1];
 			var panel = doc.getElementById(panelId);
@@ -147,6 +157,9 @@
 		this.element.removeAttribute('role');
 		this.element.removeAttribute('aria-label');
 		this.list.removeAttribute('role');
+		forEach(this.listItems, function(item){
+			item.removeAttribute('role');
+		});
 		forEach(this.handles, function(handle) {
 			handle.removeAttribute('role');
 			handle.removeAttribute('aria-controls');
@@ -172,13 +185,23 @@
 				component.select.call(component, index);
 			});
 			addEventListener(handle, 'keydown', function(event) {
-				component.onKeydown.call(component, event);
+				component.onTabPress.call(component, event);
+			});
+		});
+		forEach(this.prevButtons, function(button) {
+			addEventListener(button, 'click', function(event) {
+				component.selectPrevious();
+			});
+		});
+		forEach(this.nextButtons, function(button) {
+			addEventListener(button, 'click', function(event) {
+				component.selectNext();
 			});
 		});
 		return this;
 	};
 
-	TabThat.prototype.onKeydown = function(event) {
+	TabThat.prototype.onTabPress = function(event) {
 		switch(event.keyCode) {
 			case KEY_CODES.LEFT:
 			case KEY_CODES.UP:
@@ -188,9 +211,16 @@
 			case KEY_CODES.DOWN:
 				this.selectNext();
 				break;
+			case KEY_CODES.HOME:
+				this.selectFirst();
+				break;
+			case KEY_CODES.END:
+				this.selectLast();
+				break;
 			default:
 				break;
 		}
+		this.selectedTab.handle.focus();
 	};
 
 	TabThat.prototype.unbind = function() {
@@ -214,7 +244,6 @@
 		addClass(tab.handle, this.settings.selectedClass);
 		tab.panel.setAttribute('aria-hidden', false);
 		addClass(tab.panel, this.settings.selectedClass);
-		tab.handle.focus();
 	};
 
 	TabThat.prototype.select = function(index) {
@@ -224,14 +253,18 @@
 			this.hideTab(this.selectedIndex);
 		}
 		this.selectedIndex = index;
+		this.selectedTab = this.tabs[index];
 		this.showTab(this.selectedIndex);
 	};
 
 	TabThat.prototype.selectPrev     =
-	TabThat.prototype.selectPrevious = function() { this.select(this.selectedIndex -1); };
-	TabThat.prototype.selectNext     = function() { this.select(this.selectedIndex +1); };
+	TabThat.prototype.selectPrevious = function() {
+		var index = (this.selectedIndex > 0) ? this.selectedIndex -1 : this.tabs.length -1;
+		this.select(index);
+	};
+	TabThat.prototype.selectNext     = function() { this.select((this.selectedIndex +1) % this.tabs.length); };
 	TabThat.prototype.selectFirst    = function() { this.select(0); };
-	TabThat.prototype.selectLast     = function() { this.select(this.tabs.length-1); };
+	TabThat.prototype.selectLast     = function() { this.select(this.tabs.length -1); };
 
 	/**
 	 * Helper method for Array.prototype.indexOf
