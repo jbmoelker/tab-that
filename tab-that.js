@@ -68,7 +68,6 @@
 		this.settings = extend(this.getDefaults(element), options);
 		this.tabs = [];
 		this.panels = [];
-		this.title = element.querySelector(this.settings.titleSelector).innerHTML;
 		this.list = element.querySelector(this.settings.listSelector);
 		this.listItems = this.list.querySelectorAll('li');
 		this.handles = this.list.querySelectorAll('a');
@@ -108,7 +107,6 @@
 
 	TabThat.prototype.getDefaults = function(element) {
 		return  {
-			titleSelector: '[data-tab-title]',
 			listSelector: '[data-tab-list]',
 			prevButtonSelector: '[data-tab-previous]',
 			nextButtonSelector: '[data-tab-next]',
@@ -130,8 +128,6 @@
 
 	TabThat.prototype.link = function() {
 		var component = this;
-		this.element.setAttribute('role','application');
-		this.element.setAttribute('aria-label', this.title);
 		this.list.setAttribute('role','tablist');
 		forEach(this.listItems, function(item){
 			item.setAttribute('role','presentation');
@@ -154,8 +150,6 @@
 	};
 
 	TabThat.prototype.unlink = function() {
-		this.element.removeAttribute('role');
-		this.element.removeAttribute('aria-label');
 		this.list.removeAttribute('role');
 		forEach(this.listItems, function(item){
 			item.removeAttribute('role');
@@ -166,7 +160,7 @@
 			handle.removeAttribute('aria-selected');
 			handle.removeAttribute('tabindex');
 		});
-		forEach(this.handles, function(panel) {
+		forEach(this.panels, function(panel) {
 			panel.removeAttribute('role');
 			panel.removeAttribute('aria-labelledby');
 			panel.removeAttribute('aria-hidden');

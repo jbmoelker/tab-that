@@ -30,6 +30,7 @@ Install dev dependencies using [Node NPM](http://nodejs.org/):
 
 ## To do
 
+* Change button API to `[data-tab-select]` and support indices (`[data-tab-select="2"]`) & actions (`data-tab-select="next"]`)
 * Add config & examples for `carousel` and `accordion` mode.
 * Add support for animations?
 * Add support for hover intent?
