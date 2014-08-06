@@ -175,7 +175,7 @@
 		var component = this;
 		forEach(this.handles, function(handle, index) {
 			addEventListener(handle, 'click', function(event) {
-				event.preventDefault();
+				//event.preventDefault();
 				component.select.call(component, index);
 			});
 			addEventListener(handle, 'keydown', function(event) {
@@ -238,6 +238,7 @@
 		addClass(tab.handle, this.settings.selectedClass);
 		tab.panel.setAttribute('aria-hidden', false);
 		addClass(tab.panel, this.settings.selectedClass);
+		//window.location.hash = tab.panel.id;
 	};
 
 	TabThat.prototype.select = function(index) {
